@@ -26,7 +26,7 @@ public class Iterative {
 
         int i = 0;
         while (i < 10) {
-            int i = i+1;
+            i = i+1;
         }
 
         /** END */
@@ -43,8 +43,12 @@ public class Iterative {
     public int getInput() {
         /** ANSWER */
 
-        int min = 0;
-        int max = 0;
+        Scanner sc = new Scanner(System.in);
+
+        int min = sc.nextInt();
+        int max = sc.nextInt();
+
+        sc.close(); //Closing the scanner to avoid memory leaks
 
         /** END */
         return b(min, max);
@@ -60,7 +64,11 @@ public class Iterative {
     public int b(int min, int max) {
         /** ANSWER */
 
+        int sum = 0;
 
+        for (int i = min; i <= max; i++) {
+            sum = sum + i;
+        }
 
         /** END */
         return checkB(min, max, sum);
@@ -79,7 +87,7 @@ public class Iterative {
         int c = 12;
 
         // Calculate the average of a, b and c
-        int avg = a + b + c / 3;
+        int avg = (a + b + c) / 3;
 
         /** ANSWER */
 

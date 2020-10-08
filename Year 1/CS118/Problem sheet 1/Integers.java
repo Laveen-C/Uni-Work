@@ -23,7 +23,9 @@ public class Integers {
     public int a() {
         /** ANSWER */
 
-
+        byte var1 = 0;
+        short var2 = 0;
+        long var3 = 0;
 
 
         /** END */
@@ -43,13 +45,21 @@ public class Integers {
         int int_max = 2147483647;
         /** ANSWER */
 
+        byte byte_min = -128;
+        byte byte_max = 127;
+
+        short short_min = -32768;
+        short short_max = 32767;
+
+        long long_min = -9223372036854775808L;
+        long long_max = 9223372036854775807L;
 
         /** END */
         int sum = 0;
         sum += checkB(int_min, int_max);
-        sum += checkB(/** COMPLETE ME */);
-        sum += checkB(/** COMPLETE ME */);
-        sum += checkB(/** COMPLETE ME */);
+        sum += checkB(byte_min, byte_max);
+        sum += checkB(short_min, short_max);
+        sum += checkB(long_min, long_max);
         return sum;
     }
 
@@ -66,7 +76,7 @@ public class Integers {
         /** ANSWER */
 
         // For example:
-        int ans = -10;
+        int ans = -2147483443;
 
         /** END */
         return checkC(ans);
@@ -83,7 +93,7 @@ public class Integers {
         /** ANSWER */
 
         // For example:
-        int ans = 11000110;
+        int ans = 11100000;
 
         /** END */
         return checkD(ans);
