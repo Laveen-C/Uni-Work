@@ -12,9 +12,9 @@ public class DumboController {
 
 		int randno;
 		int direction;
-		int wallCount;
-		String logEntry = "I'm going forward";
-		String directionWord = "";
+		int wallCount = 0;
+		String logEntry = "I'm going";
+		String phraseToAdd = "";
 
 		// Removing collisions
 		while (true) {	// Repeatedly generate directions until we choose one that is not into a wall
@@ -26,16 +26,20 @@ public class DumboController {
 			switch (randno) {
 				case 0:
 					direction = IRobot.LEFT;
-					directionWord = "left";
+					phraseToAdd = " left";
+					break;
 				case 1:
 					direction = IRobot.RIGHT;
-					directionWord = "right";
+					phraseToAdd = " right";
+					break;
 				case 2:
 					direction = IRobot.BEHIND;
-					directionWord = "backwards";
+					phraseToAdd = " backwards";
+					break;
 				default:
 					direction = IRobot.AHEAD;
-					directionWord = "forwards";
+					phraseToAdd = " forwards";
+					break;
 			}
 
 			if (robot.look(direction) != IRobot.WALL)	// Check that the chosen direction is not into a wall
@@ -45,7 +49,32 @@ public class DumboController {
 
 		// Print a log of movements taken by the robot
 
-		logEntry += directionWord;
+		logEntry += phraseToAdd; // Adding the direction on to logEntry
+
+		for (int i = 0; i < 4; i++) { // Iterating to get the number of walls neighbouring the robot's current square
+
+			int square = IRobot.AHEAD + i;
+
+			if (robot.look(square) == IRobot.WALL)
+				wallCount += 1;			
+		}
+
+		switch (wallCount) {
+			case 0:
+				phraseToAdd = " at a crossroads";
+				break;
+			case 1:
+				phraseToAdd = " at a junction";
+				break;
+			case 2:
+				phraseToAdd = " down a corridor";
+				break;
+			case 3:
+				phraseToAdd = " at a deadend";
+				break;
+		}
+
+		logEntry += phraseToAdd; // Adding the type of road the robot is on
 
 		System.out.println(logEntry);
 
