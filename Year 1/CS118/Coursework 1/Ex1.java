@@ -100,24 +100,3 @@ public class Ex1 {
 	}
 
 }
-
-/* Discussion about probability of choosing each direction:
- * 
- * For the sake of this discussion, I will use round() and floor() to refer to the Math.round() and Math.floor() methods respectively.
- * After reading the Java documentation, we can see that the random function is approximately uniform in terms of probability,
- * meaning we can generally assume that this will choose every number with equal probability.
- * Let x be the number returned after calling Math.random()
- * We can see that the round function is equivalent to adding 0.5 and flooring i.e. round(x) = floor(x + 1/2)
- * Therefore our randomly generated integer can be written as round(3x) = floor(3x + 1/2)
- * For the randomly generated integer to be equal to 0, we can see that 0 <= 3x + 1/2 < 1 , since the floor of anything in that interval will give 0.
- * This can be rearranged to get the inequality -1/6 <= x < 1/6 , but since the lowest x can be is 0 (from the random method) this inequality resolves to
- * 0 <= x < 1/6 , meaning the probability of randomly generating the integer 0 with our current approach is 1/6.
- * We can take a similar approach for the other values to get the probabilites for each direction below:
- * 		p(generating 0) = p(moving left) = 1/6
- * 		p(generating 1) = p(moving right) = 1/3
- * 		p(generating 2) = p(moving behind) = 1/3
- * 		p(generating 3) = p(moving ahead) = 1/6
- * This shows us that the probability of choosing each direction (since each direction is assigned to an integer from 0 to 3) is not equal.
- * Therefore the customer is correct in claiming that the robot chooses some directions more than others.
- * We can also observe this by using count.pl in the terminal when running our code on a blank maze.
- */
