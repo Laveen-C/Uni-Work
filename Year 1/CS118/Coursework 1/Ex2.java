@@ -4,9 +4,13 @@
  * Author: Stephen Jarvis
  */
 
+ /* Preamble for exercise 2:
+  * 
+  */
+
 import uk.ac.warwick.dcs.maze.logic.IRobot;
 
-public class Ex1 {
+public class Ex2 {
 
 	public void controlRobot(IRobot robot) {
 
@@ -20,7 +24,7 @@ public class Ex1 {
 		while (true) {	// Repeatedly generate directions until we choose one that is not into a wall
 		
 			// Select a random number
-			randno = (int) Math.round(Math.random()*3);
+			randno = (int) Math.floor(Math.random()*4); // Modification to the original approach of generating random integers to ensure randomness
 
 			// Convert this to a direction and set this direction to a string to be added to logEntry
 			switch (randno) {
