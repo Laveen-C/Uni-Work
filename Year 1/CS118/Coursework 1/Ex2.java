@@ -20,38 +20,46 @@ public class Ex2 {
 		String logEntry = "I'm going";
 		String phraseToAdd = "";
 
-		// Removing collisions
-		while (true) {	// Repeatedly generate directions until we choose one that is not into a wall
-		
-			// Select a random number
-			randno = (int) Math.floor(Math.random()*4); // Modification to the original approach of generating random integers to ensure randomness
-
-			// Convert this to a direction and set this direction to a string to be added to logEntry
-			switch (randno) {
-				case 0:
-					direction = IRobot.LEFT;
-					phraseToAdd = " left";
-					break;
-				case 1:
-					direction = IRobot.RIGHT;
-					phraseToAdd = " right";
-					break;
-				case 2:
-					direction = IRobot.BEHIND;
-					phraseToAdd = " backwards";
-					break;
-				default:
-					direction = IRobot.AHEAD;
-					phraseToAdd = " forward";
-					break;
-			}
-
-			if (robot.look(direction) != IRobot.WALL)	// Check that the chosen direction is not into a wall
-				break;
-
+		if (robot.look(IRobot.AHEAD) != IRobot.WALL) { // If the square in the direction the robot is facing is not a wall, then we go in that direction
+			direction = IRobot.AHEAD;
+			phraseToAdd = " forward";
 		}
 
-		// Print a log of movements taken by the robot
+		else { // If the square in the direction the robot is facing is a wall, then we randomly choose another direction that is not a wall.
+			// Removing collisions
+			while (true) {	// Repeatedly generate directions until we choose one that is not into a wall
+			
+				// Select a random number
+				randno = (int) Math.floor(Math.random()*4); // Modification to the original approach of generating random integers to ensure randomness
+
+				// Convert this to a direction and set this direction to a string to be added to logEntry
+				switch (randno) {
+					case 0:
+						direction = IRobot.LEFT;
+						phraseToAdd = " left";
+						break;
+					case 1:
+						direction = IRobot.RIGHT;
+						phraseToAdd = " right";
+						break;
+					case 2:
+						direction = IRobot.BEHIND;
+						phraseToAdd = " backwards";
+						break;
+					default:
+						direction = IRobot.AHEAD;
+						phraseToAdd = " forward";
+						break;
+
+				}
+
+				if (robot.look(direction) != IRobot.WALL)	// Check that the chosen direction is not into a wall
+					break;
+
+			}
+		}
+		
+		// Print a log of movements taken by the robot (done regardless of whether we continue in our current direction or choose a new one)
 
 		logEntry += phraseToAdd; // Adding the direction on to logEntry
 
