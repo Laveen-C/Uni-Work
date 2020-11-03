@@ -38,7 +38,7 @@ public class Ex1 {
 					break;
 				default:
 					direction = IRobot.AHEAD;
-					phraseToAdd = " forwards";
+					phraseToAdd = " forward";
 					break;
 			}
 
