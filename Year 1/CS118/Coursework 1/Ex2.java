@@ -20,7 +20,7 @@ public class Ex2 {
 		String logEntry = "I'm going";
 		String phraseToAdd = "";
 
-		if (robot.look(IRobot.AHEAD) != IRobot.WALL) { // If the square in the direction the robot is facing is not a wall, then we go in that direction
+		if ((robot.look(IRobot.AHEAD) != IRobot.WALL) && ((int) Math.floor(Math.random()*8) != 0) ) { // If the square ahead is a wall or if we choose the number 0 from integers 0-7 (1/8 chance)
 			direction = IRobot.AHEAD;
 			phraseToAdd = " forward";
 		}
@@ -58,7 +58,7 @@ public class Ex2 {
 
 			}
 		}
-		
+
 		// Print a log of movements taken by the robot (done regardless of whether we continue in our current direction or choose a new one)
 
 		logEntry += phraseToAdd; // Adding the direction on to logEntry
