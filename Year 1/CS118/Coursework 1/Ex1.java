@@ -119,5 +119,5 @@ public class Ex1 {
  * 		p(generating 3) = p(moving ahead) = 1/6
  * This shows us that the probability of choosing each direction (since each direction is assigned to an integer from 0 to 3) is not equal.
  * Therefore the customer is correct in claiming that the robot chooses some directions more than others.
- * We can also observe this by using count.pl in the terminal when running our code.
+ * We can also observe this by using count.pl in the terminal when running our code on a blank maze.
  */
