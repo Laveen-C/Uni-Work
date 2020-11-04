@@ -6,7 +6,28 @@
 
 /** Preamble for exercise 3:
  * 
+ * When it came to designing my headingController method, I used the following approach:
+ * 		- Create a hash map to hold the return values of isTargetNorth and isTargetEast as keys, and the preferred directions as values.
+ * 		- Use this to obtain the preferred directions for the robot's current position.
+ * 		- Check the alignment of the robot with the target square, and create an arraylist of directions we want to check accordingly.
+ * 		- Set the robot to make it's next move along the chosen direction.
  * 
+ * I decided to use a hashmap as I thought this would be the best way to relate the position of the robot (relative to the target) to the preferred direction we want the robot to go in.
+ * I accounted for the case when the robot was vertically or horizontally in line with the target by assigning the key value of 0 (which refers to this exact situation) to the value 0 as well.
+ * This is so I can essentially check for the case when the robot is aligned when using if-else statements to decide the direction the robot should take. 
+ * I also decided to use an arraylist because the different positions that our robot could be in allow for a different number of possible directions the robot could go in. I also decided
+ * to keep the process of choosing a random direction in a separate function; I passed my arraylist into this function, which generates a random number from 0 to the size of the list - 1 to obtain 
+ * an index to decide the direction.
+ * 
+ * The design for the heading controller does not always ensure that the robot reaches the target, and this is due to the requirements of the specification for this exercise. 
+ * The heading controller is designed to always select a heading that will move the robot closer to the target unless there are no such headings available, in which case it will randomly 
+ * choose between other headings which may not move the robot closer to the target, but instead farther. 
+ * Suppose that the robot, whilst following the directions generated in order to get itself closer to the target with each move, reaches a dead end on it's way to the target. Then, by the specification,
+ * the robot will attempt to go backwards, since that is the only direction it can go without colliding with a wall. However, by going backwards, it has a new move which will allow it to get closer to the target,
+ * which is the same move that brought it into the dead end. This will repeat until the user stops the run. Therefore, it is not ensured that the robot always moves closer towards the target, neither is it ensured that the robot always finds the target.
+ * 
+ * To improve the robot, I think writing the robot in such a way that it can remember it's past few moves, so that when it gets stuck in a deadend or some sort of loop of movements, it is able to get out of them by essentially
+ * backtracking it's previous movements.
  * 
  */
 
