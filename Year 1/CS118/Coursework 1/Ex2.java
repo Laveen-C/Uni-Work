@@ -53,20 +53,22 @@ public class Ex2 {
 		String logEntry = "I'm going";
 		String phraseToAdd = "";
 
-		if ((robot.look(IRobot.AHEAD) != IRobot.WALL) && ((int) Math.floor(Math.random()*8) != 0)) { // If the square ahead is a wall or if we choose the number 0 from integers 0-7 (1/8 chance)
+		// If the square ahead is a wall or if we choose the number 0 from integers 0-7 (1/8 chance)
+		if ((robot.look(IRobot.AHEAD) != IRobot.WALL) && ((int) Math.floor(Math.random()*8) != 0)) { 
 			
 			direction = IRobot.AHEAD;
 			phraseToAdd = " forward";
 
 		}
 
-		else { // If the square in the direction the robot is facing is a wall, then we randomly choose another direction that is not a wall.
+		// If the square in the direction the robot is facing is a wall, then we randomly choose another direction that is not a wall.
+		else { 
 			
-			// Removing collisions
-			while (true) {	// Repeatedly generate directions until we choose one that is not into a wall
+			// Removing collisions by repeatedly generating directions until we choose one that is not into a wall
+			while (true) {
 			
-				// Select a random number
-				randno = (int) Math.floor(Math.random()*4); // Modification to the original approach of generating random integers to ensure randomness
+				// Modification to the original approach of generating random integers to ensure randomness
+				randno = (int) Math.floor(Math.random()*4); 
 
 				// Convert this to a direction and set this direction to a string to be added to logEntry
 				switch (randno) {
@@ -90,7 +92,8 @@ public class Ex2 {
 		
 				}
 
-				if (robot.look(direction) != IRobot.WALL)	// Check that the chosen direction is not into a wall
+				// Check that the chosen direction is not into a wall
+				if (robot.look(direction) != IRobot.WALL)
 					break;
 
 			}
@@ -99,9 +102,11 @@ public class Ex2 {
 
 		// Print a log of movements taken by the robot (done regardless of whether we continue in our current direction or choose a new one)
 
-		logEntry += phraseToAdd; // Adding the direction on to logEntry
+		// Adding the direction on to logEntry
+		logEntry += phraseToAdd; 
 
-		for (int i = 0; i < 4; i++) { // Iterating to get the number of walls neighbouring the robot's current square
+		// Iterating to get the number of walls neighbouring the robot's current square
+		for (int i = 0; i < 4; i++) { 
 			
 			int square = IRobot.AHEAD + i;
 
@@ -127,12 +132,13 @@ public class Ex2 {
 		
 		}
 
-		logEntry += phraseToAdd; // Adding the type of road the robot is on
+		// Adding the type of road the robot is on
+		logEntry += phraseToAdd; 
 
 		System.out.println(logEntry);
 
-		robot.face(direction);	// Face the robot in this direction
-
+		// Face the robot in this direction
+		robot.face(direction);	
 	}
 
 }

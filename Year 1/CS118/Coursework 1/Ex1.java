@@ -30,8 +30,8 @@ public class Ex1 {
 		String logEntry = "I'm going";
 		String phraseToAdd = "";
 
-		// Removing collisions
-		while (true) {	// Repeatedly generate directions until we choose one that is not into a wall
+		// Removing collisions by repeatedly generating directions until we choose one that is not into a wall
+		while (true) {
 		
 			// Select a random number
 			randno = (int) Math.round(Math.random()*3);
@@ -56,16 +56,19 @@ public class Ex1 {
 					break;
 			}
 
-			if (robot.look(direction) != IRobot.WALL)	// Check that the chosen direction is not into a wall
+			// Check that the chosen direction is not into a wall
+			if (robot.look(direction) != IRobot.WALL)	
 				break;
 
 		}
 
 		// Print a log of movements taken by the robot
+		
+		// Adding the direction on to logEntry
+		logEntry += phraseToAdd; 
 
-		logEntry += phraseToAdd; // Adding the direction on to logEntry
-
-		for (int i = 0; i < 4; i++) { // Iterating to get the number of walls neighbouring the robot's current square
+		// Iterating to get the number of walls neighbouring the robot's current square
+		for (int i = 0; i < 4; i++) {
 			
 			int square = IRobot.AHEAD + i;
 
@@ -74,7 +77,8 @@ public class Ex1 {
 
 		}
 
-		switch (wallCount) { // Determining the type of path the robot is on, based on the number of adjacent walls
+		// Determining the type of path the robot is on, based on the number of adjacent walls
+		switch (wallCount) { 
 		
 			case 0:
 				phraseToAdd = " at a crossroads";
@@ -91,11 +95,13 @@ public class Ex1 {
 				
 		}
 
-		logEntry += phraseToAdd; // Adding the type of path the robot is on
+		// Adding the type of path the robot is on
+		logEntry += phraseToAdd; 
 
 		System.out.println(logEntry);
 
-		robot.face(direction);	// Face the robot in this direction
+		// Face the robot in this direction
+		robot.face(direction);	
 
 	}
 
