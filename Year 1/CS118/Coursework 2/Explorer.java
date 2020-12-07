@@ -97,7 +97,7 @@ public class Explorer {
             if (robot.look(IRobot.AHEAD + i) == IRobot.PASSAGE) {
                 passageDirections.add(IRobot.AHEAD + i);
             }
-            else if (robot.look(IRobot.AHEAD + i) == IRobot.BEENBEFORE) {
+            else if ((IRobot.AHEAD + i != IRobot.BEHIND) && (robot.look(IRobot.AHEAD + i) == IRobot.BEENBEFORE))  { // Note that we want to exclude going back as an option
                 previousDirections.add(IRobot.AHEAD + i);
             }
         }
