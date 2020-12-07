@@ -164,7 +164,7 @@ class RobotData {
 
     public void printJunction() {
         String temp;
-        temp = "Junction" + junctionCounter + "(x=" + junctions[junctionCounter].x + ", y=" + junctions[junctionCounter].y + " heading " + junctions[junctionCounter].heading;
+        temp = "Junction" + junctionCounter + "(x=" + junctions[junctionCounter].x + ", y=" + junctions[junctionCounter].y + " heading " + junctions[junctionCounter].arrived;
         System.out.println(temp);
     }
 }
