@@ -119,7 +119,7 @@ public class Explorer {
 
         // If this is a new junction that has not been previously visited, we need to store data for this junction
         if (beenbeforeExits(robot) > 1) {
-            robotData.junctions[robotData.junctionCounter] = JunctionRecorder(robot); // We store the current junction's data in the junctions array
+            robotData.junctions[robotData.junctionCounter] = new JunctionRecorder(robot); // We store the current junction's data in the junctions array
             robotData.junctionCounter++; // Increment the junction counter since we have found a new junction
         }
 
