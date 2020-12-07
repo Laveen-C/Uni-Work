@@ -120,6 +120,7 @@ public class Explorer {
         // If this is a new junction that has not been previously visited, we need to store data for this junction
         if (beenbeforeExits(robot) > 1) {
             robotData.junctions[robotData.junctionCounter] = new JunctionRecorder(robot); // We store the current junction's data in the junctions array
+            robotData.printJunction();
             robotData.junctionCounter++; // Increment the junction counter since we have found a new junction
         }
 
@@ -164,7 +165,7 @@ class RobotData {
 
     public void printJunction() {
         String temp;
-        temp = "Junction" + junctionCounter + "(x=" + junctions[junctionCounter].x + ", y=" + junctions[junctionCounter].y + " heading " + junctions[junctionCounter].arrived;
+        temp = "Junction" + (junctionCounter + 1) + "(x=" + junctions[junctionCounter].x + ", y=" + junctions[junctionCounter].y + " heading " + junctions[junctionCounter].arrived;
         System.out.println(temp);
     }
 }
