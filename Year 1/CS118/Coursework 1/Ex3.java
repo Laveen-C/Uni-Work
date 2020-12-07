@@ -60,7 +60,7 @@ public class Ex3 {
 	
 	}	
 
-	// Method for working out the state of a square at some given bsolute direction 
+	// Method for working out the state of a square at some given absolute direction 
 	private int lookHeading(IRobot robot, int heading) {
 		/* We calculate the state of the square by doing the following steps:
 		 * 		- Work out the difference between the integers representing the absolute direction of interest and the relative direction currently faced
