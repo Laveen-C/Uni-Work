@@ -50,7 +50,7 @@ public class Explorer {
         */
         int nonWallCount = 0;
         for (int i = 0; i < 4; i++) {
-            if (robot.look(IRobot.NORTH + i) != IRobot.WALL) {
+            if (robot.look(IRobot.AHEAD + i) != IRobot.WALL) {
                 nonWallCount++;
             }
         }
