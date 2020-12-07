@@ -5,9 +5,16 @@ import uk.ac.warwick.dcs.maze.logic.IRobot;
 import java.util.*;
 
 public class Explorer {
+    private int pollRun = 0; // Incremented after each move
+    private RobotData robotData; // Data store for junctions
+
     public void controlRobot(IRobot robot) {
         int exits;
         int direction = 0;
+
+        if ((robot.getRuns() == 0) && (pollRun == 0)) { // Checking if we are currently on the first run of a new maze
+            robotData = new RobotData(); // Resets the data store
+        } 
         
         exits = nonwallExits(robot);
 
@@ -27,6 +34,11 @@ public class Explorer {
         }
 
         robot.face(direction);
+        pollRun++; // Increment pollRun so that the data is not reset each time the robot moves
+    }
+
+    public void reset() {
+        robotData.resetJunctionCounter();
     }
 
     // Method to choose a random direction, given an ArrayList of absolute directions
@@ -55,6 +67,18 @@ public class Explorer {
             }
         }
         return nonWallCount;
+    }
+
+    private int beenbeforeExits(IRobot robot) {
+        // This will return us the number of BEENBEFORE exits adjacent to the current square the robot is occupying
+        int exits = 0;
+
+        for (int i  = 0; i < 4; i++) {
+            if (robot.look(IRobot.AHEAD + i) == IRobot.BEENBEFORE) {
+                exits++;
+            }
+        }
+        return exits;
     }
 
     private int deadEnd(IRobot robot) {
@@ -93,6 +117,12 @@ public class Explorer {
         ArrayList<Integer> passageDirections = new ArrayList<Integer>();
         ArrayList<Integer> previousDirections = new ArrayList<Integer>();
 
+        // If this is a new junction that has not been previously visited, we need to store data for this junction
+        if (beenbeforeExits(robot) > 1) {
+            robotData.junctions[robotData.junctionCounter] = JunctionRecorder(robot); // We store the current junction's data in the junctions array
+            robotData.junctionCounter++; // Increment the junction counter since we have found a new junction
+        }
+
         for (int i = 0; i < 4; i++) {
             if (robot.look(IRobot.AHEAD + i) == IRobot.PASSAGE) {
                 passageDirections.add(IRobot.AHEAD + i);
@@ -120,5 +150,34 @@ public class Explorer {
     private int crossroads(IRobot robot) {
         /* Here we can reuse our approach from the junction method above, as the above method will work for a junction with 4 exits i.e. a crossroads */
         return junction(robot);
+    }
+}
+
+class RobotData {
+    int junctionCounter = 0; // No. of junctions currently being stored in the array
+    int maxJunctions = 10000; // Max number of junctions likely to occur
+    JunctionRecorder[] junctions = new JunctionRecorder[maxJunctions];
+
+    public void resetJunctionCounter() {
+        junctionCounter = 0;
+    }
+
+    public void printJunction() {
+        String temp;
+        temp = "Junction" + junctionCounter + "(x=" + junctions[junctionCounter].x + ", y=" + junctions[junctionCounter].y + " heading " + junctions[junctionCounter].heading;
+        System.out.println(temp);
+    }
+}
+
+class JunctionRecorder { // This class will be used to create an object for each junction to store data about it.
+    // Attributes
+    int x;
+    int y;
+    int arrived;
+
+    public JunctionRecorder(IRobot robot) {
+        x = robot.getLocation().x;
+        y = robot.getLocation().y;
+        arrived = robot.getHeading();
     }
 }
