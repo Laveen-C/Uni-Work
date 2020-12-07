@@ -7,7 +7,7 @@ import java.util.*;
 public class Explorer {
     public void controlRobot(IRobot robot) {
         int exits;
-        int direction;
+        int direction = 0;
         
         exits = nonwallExits(robot);
 
@@ -64,6 +64,7 @@ public class Explorer {
                 return IRobot.AHEAD + i;
             }
         } 
+        return 0;
     }
 
     private int corridoor(IRobot robot) {
