@@ -65,7 +65,7 @@ public class Explorer {
             direction = corridoor(robot);
         }
         else { // Junction and crossroads case
-            if ((nonwallExits - beenbeforeExits(robot) > 0) { // Meaning we have passage exits
+            if ((nonwallExits - beenbeforeExits(robot)) > 0) { // Meaning we have passage exits
                 explorerMode = 1;
                 direction = junction(robot); // Get the direction to proceed in
             }
