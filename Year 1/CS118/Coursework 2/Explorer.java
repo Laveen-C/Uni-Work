@@ -71,7 +71,7 @@ public class Explorer {
             }
             else { // We need to backtrack through this junction
                 heading = robotData.searchJunction(robot.getLocation().x, robot.getLocation().y); // Heading we initially approached this junction from
-                direction = IRobot.AHEAD + (heading - robot.getHeading() + 4) % 4; // Formula to calculate the relative direction the robot must go in
+                direction = IRobot.AHEAD + 2 + (heading - robot.getHeading() + 4) % 4; // Formula to calculate the relative direction the robot must go in
             }
         }
         robot.face(direction);
