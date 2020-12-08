@@ -26,8 +26,7 @@ public class Explorer {
     }
 
     public void exploreControl(IRobot robot) {
-        System.out.println("Explorer mode");
-        // Note that we only go into backtracking mode when we reach a deadend or a junction with beenBefore exits >= 2
+        System.out.println("Exploring");
         int exits;
         int direction = 0;
 
@@ -53,7 +52,7 @@ public class Explorer {
     }
 
     public void backtrackControl(IRobot robot) {
-        System.out.println("Backtrack mode");
+        System.out.println("Backtracking");
         int direction;
         int heading;
         int nonwallExits;
@@ -69,12 +68,8 @@ public class Explorer {
         else { // Junction and crossroads case
             if ((nonwallExits - beenbeforeExits(robot)) > 0) { // Meaning we have passage exits
                 explorerMode = 1;
-                direction = junction(robot); // Get the direction to proceed in
             }
-            else { // We need to backtrack through this junction
-                heading = robotData.searchJunction(robot.getLocation().x, robot.getLocation().y); // Heading we initially approached this junction from
-                direction = IRobot.AHEAD + (heading - robot.getHeading() + 6) % 4; // Formula to calculate the relative direction the robot must go in
-            }
+            direction = junction(robot);
         }
         robot.face(direction);
         pollRun++; // Increment pollRun so that the data is not reset each time the robot moves
@@ -90,7 +85,7 @@ public class Explorer {
 		int direction;
         int randno;
         
-        // Select a random number
+        // Selecting a random number
         randno = (int) Math.floor(Math.random()*directions.size());
         direction = directions.get(randno);
 
@@ -182,10 +177,15 @@ public class Explorer {
             return randomDirection(robot, passageDirections);
         }
         // Single PASSAGE exit
-        else {
+        else if (passageDirections.size() == 1){
             return passageDirections.get(0);
         }
-        // Note that the case of no passage exits does not occur since we would already be in the backtracking method, which deals with this case separately.
+        // No PASSAGE exit
+        else {
+            explorerMode = 0; // At this stage we should be backtracking
+            return IRobot.AHEAD + (robotData.searchJunction(robot.getLocation().x, robot.getLocation().y) - robot.getHeading() + 6) % 4;
+            // Note that we add 6 instead of 4 to reverse the direction, as we want to go in the opposite direction to which we approached the junction from
+        }
     }
 
     private int crossroads(IRobot robot) {
