@@ -26,6 +26,7 @@ public class Explorer {
     }
 
     public void exploreControl(IRobot robot) {
+        System.out.println("Explorer mode");
         // Note that we only go into backtracking mode when we reach a deadend or a junction with beenBefore exits >= 2
         int exits;
         int direction = 0;
@@ -52,6 +53,7 @@ public class Explorer {
     }
 
     public void backtrackControl(IRobot robot) {
+        System.out.println("Backtrack mode");
         int direction;
         int heading;
         int nonwallExits;
