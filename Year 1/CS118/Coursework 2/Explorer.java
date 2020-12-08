@@ -180,14 +180,10 @@ public class Explorer {
             return randomDirection(robot, passageDirections);
         }
         // Single PASSAGE exit
-        else if (passageDirections.size() == 1) {
+        else {
             return passageDirections.get(0);
         }
-        // No PASSAGE exits
-        else { // We need to backtrack through this junction 
-            System.out.println("OOPSIE"); 
-        }
-        return 0;
+        // Note that the case of no passage exits does not occur since we would already be in the backtracking method, which deals with this case separately.
     }
 
     private int crossroads(IRobot robot) {
