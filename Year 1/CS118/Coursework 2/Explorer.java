@@ -7,20 +7,35 @@ import java.util.*;
 public class Explorer {
     private int pollRun = 0; // Incremented after each move
     private RobotData robotData; // Data store for junctions
+    private int explorerMode = 1; // 1 = explore, 0 = backtrack
 
     public void controlRobot(IRobot robot) {
+        if ((robot.getRuns() == 0) && (pollRun == 0)) { // Checking if we are currently on the first run of a new maze
+            robotData = new RobotData(); // Resets the data store
+            explorerMode = 1;
+        }
+
+        // We then execute the appropriate block of code depending on if we are exploring or backtracking
+        if (explorerMode == 1) {
+            exploreControl(robot);
+        }
+        else {
+            backtrackControl(robot);
+        }
+
+    }
+
+    public void exploreControl(IRobot robot) {
+        // Note that we only go into backtracking mode when we reach a deadend or a junction with beenBefore exits >= 2
         int exits;
         int direction = 0;
 
-        if ((robot.getRuns() == 0) && (pollRun == 0)) { // Checking if we are currently on the first run of a new maze
-            robotData = new RobotData(); // Resets the data store
-        } 
-        
         exits = nonwallExits(robot);
 
         switch (exits) {
             case 1:
                 direction = deadEnd(robot);
+                explorerMode = 0; // We want to backtrack when we are at a dead end
                 break;
             case 2:
                 direction = corridoor(robot);
@@ -32,13 +47,40 @@ public class Explorer {
                 direction = crossroads(robot);
                 break;
         }
+        robot.face(direction);
+        pollRun++; // Increment pollRun so that the data is not reset each time the robot moves
+    }
 
+    public void backtrackControl(IRobot robot) {
+        int direction;
+        int heading;
+        int nonwallExits;
+        
+        nonwallExits = nonwallExits(robot); 
+
+        if (nonwallExits == 1) { // Dead end case
+            direction = deadEnd(robot); 
+        }
+        else if (nonwallExits == 2) { // Corridoor case
+            direction = corridoor(robot);
+        }
+        else { // Junction and crossroads case
+            if ((nonwallExits - beenbeforeExits(robot) > 0) { // Meaning we have passage exits
+                explorerMode = 1;
+                direction = junction(robot); // Get the direction to proceed in
+            }
+            else { // We need to backtrack through this junction
+                heading = robotData.searchJunction(robot.getLocation().x, robot.getLocation().y); // Heading we initially approached this junction from
+                direction = IRobot.AHEAD + (heading - robot.getHeading() + 4) % 4; // Formula to calculate the relative direction the robot must go in
+            }
+        }
         robot.face(direction);
         pollRun++; // Increment pollRun so that the data is not reset each time the robot moves
     }
 
     public void reset() {
         robotData.resetJunctionCounter();
+        explorerMode = 1;
     }
 
     // Method to choose a random direction, given an ArrayList of absolute directions
@@ -120,7 +162,7 @@ public class Explorer {
         // If this is a new junction that has not been previously visited, we need to store data for this junction
         if (beenbeforeExits(robot) == 1) {
             robotData.junctions[robotData.junctionCounter] = new JunctionRecorder(robot); // We store the current junction's data in the junctions array
-            robotData.printJunction();
+            // robotData.printJunction(); // test line to ensure data is being stored as expected
             robotData.junctionCounter++; // Increment the junction counter since we have found a new junction
         }
 
@@ -142,8 +184,8 @@ public class Explorer {
             return passageDirections.get(0);
         }
         // No PASSAGE exits
-        else {
-            return randomDirection(robot, previousDirections);
+        else { // We need to backtrack through this junction 
+            System.out.println("OOPSIE"); 
         }
 
     }
@@ -161,6 +203,16 @@ class RobotData {
 
     public void resetJunctionCounter() {
         junctionCounter = 0;
+    }
+
+    public int searchJunction(int x, int y) { // Returns the robot's heading when first approaching the junction at (x, y)
+        for (int i = 0; i <= junctionCounter; i++) {
+            if ((junctions[i].x == x) && (junctions[i].y == y)) {
+                return junctions[i].arrived;
+            }
+        }
+        // If we reach this block of code, it means we have reached a junction which we have not previously encountered 
+        return IRobot.CENTRE; // We take this to be our 'null' value to indicate that we must return to explorer mode 
     }
 
     public void printJunction() {
