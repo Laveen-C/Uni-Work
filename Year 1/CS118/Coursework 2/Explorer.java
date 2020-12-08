@@ -187,7 +187,7 @@ public class Explorer {
         else { // We need to backtrack through this junction 
             System.out.println("OOPSIE"); 
         }
-
+        return 0;
     }
 
     private int crossroads(IRobot robot) {
