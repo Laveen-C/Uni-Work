@@ -1,7 +1,40 @@
 // Code for Exercise 1 of Coursework 2, Part 1 - Laveen Chandnani (2004842)
 
-/* Preamble for Exercise 1
-*/
+/* Preamble for Exercise 1:
+ * 
+ * When storing the data for each junction, I decided to use an object for each junction as opposed to multiple arrays, since
+ * this makes it easier to maintain the list of junctions the robot has visited (which is a list of junction objects in my implementation).
+ * 
+ * I chose not to have a method for passageExits, as I didn't think this was necessary beacuse the number of passage exits is given by the 
+ * difference between the number of non-wall exits and the number of been before exits, which already have methods defined for them.
+ * 
+ * For the three controller methods, I chose to implement them as following;
+ *  - deadEnd: I checked all four directions to find the direction which does not have a wall facing it, and returned this
+ *  - corridoor: We know that for any corridoor, we have 3 options of directions to move in; ahead, left or right. Backwards is not an option
+ *               since we have no reason to reverse in a corridoor.
+ *  - junction: My approach here was to create 2 array lists:
+ *              - passageDirections: To hold the directions which have not been visited before
+ *              - previousDirections: To hold the directions which have been visited before
+ *              From this I was then able to determine what type of junction the robot is in:
+ *              - A junction with multiple passages => We choose randomly from these (using a randomDirection method I've implemented)
+ *              - A junction with a single passage => We take this single passage
+ *              - A junction with no passages => We backtrack to the previous junction 
+ *              I used array lists as I wanted the sizes of the arrays to be dynamic, as this way I could then check the size of the passageDirections 
+ *              array list to work out how many passages the current junction has 
+ * 
+ * The RobotData class I'd written holds the array of junction objects as an attribute, and when backtracking we use the searchJunction method, which will 
+ * return to us the heading the robot needs to go in to return to the previous junction we approached the current junction from. 
+ * 
+ * There isn't a lot of repeated code since I have made sure to put code that I am using frequently into methods, but there are smaller blocks of code that
+ * are repeated e.g. the exploreControl and backtrackControl methods share a similar purpose and so are coded similarly. However, this is justified since 
+ * the lines that are repeated don't make sense to put into a method/function of their own.
+ * 
+ * In the worst case, we can be sure that the robot will always find it's target using the current specification, since the code will at most check every 
+ * single path in the maze before arriving at the end goal. At most, the robot will have to go through every path in the maze before reaching the goal cell.
+ * This means that all cells between a deadend and a junction/crossroads will be encountered twice, all junctions will be encountered twice, all crossroads 
+ * will be encountered thrice, and all other remaining cells will be encountered once. The result of this calculation will give us the maximum number of steps 
+ * that the robot may have to take before finding the target.
+ */
 
 
 import uk.ac.warwick.dcs.maze.logic.IRobot;
@@ -25,39 +58,31 @@ public class Ex1 {
         else {
             backtrackControl(robot);
         }
-
     }
 
     public void exploreControl(IRobot robot) {
-        System.out.println("Exploring");
         int exits;
         int direction = 0;
 
         exits = nonwallExits(robot);
 
-        switch (exits) {
-            case 1:
-                direction = deadEnd(robot);
-                explorerMode = 0; // We want to backtrack when we are at a dead end
-                break;
-            case 2:
-                direction = corridoor(robot);
-                break;
-            case 3:
-                direction = junction(robot);
-                break;
-            case 4:
-                direction = crossroads(robot);
-                break;
+        if (exits == 1) { // Dead end case
+            direction = deadEnd(robot);
+            explorerMode = 0; // We want to backtrack when we are at a dead end
         }
+        else if (exits == 2) { // Corridoor case
+            direction = corridoor(robot);
+        }
+        else { // Junction and crossroads case
+            direction = junction(robot);
+        }
+
         robot.face(direction);
         pollRun++; // Increment pollRun so that the data is not reset each time the robot moves
     }
 
     public void backtrackControl(IRobot robot) {
-        System.out.println("Backtracking");
         int direction;
-        int heading;
         int nonwallExits;
         
         nonwallExits = nonwallExits(robot); 
@@ -99,8 +124,7 @@ public class Ex1 {
         /* Note: Return values could be
             - 1 => Dead end
             - 2 => Corridoor
-            - 3 => Junction
-            - 4 => Crossroads
+            - 3/4 => Junction
         */
         int nonWallCount = 0;
         for (int i = 0; i < 4; i++) {
@@ -191,10 +215,8 @@ public class Ex1 {
         }
     }
 
-    private int crossroads(IRobot robot) {
-        /* Here we can reuse our approach from the junction method above, as the above method will work for a junction with 4 exits i.e. a crossroads */
-        return junction(robot);
-    }
+    // Note that we do not implement a crossroads method since it would effectively be doing the same thing as the junction method
+
 }
 
 class RobotData {
