@@ -4,7 +4,7 @@
  * Author:  Stephen Jarvis
  */
 
-/** Preamble for exercise 3:
+/* Preamble for exercise 3:
  * 
  * When it came to designing my headingController method, I used the following approach:
  * 		- Create a hash map to hold the return values of isTargetNorth and isTargetEast as keys, and the preferred directions as values.

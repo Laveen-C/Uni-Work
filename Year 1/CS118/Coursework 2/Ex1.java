@@ -1,9 +1,13 @@
-// Code for Explorer.java - Laveen Chandnani (2004842)
+// Code for Exercise 1 of Coursework 2, Part 1 - Laveen Chandnani (2004842)
+
+/* Preamble for Exercise 1
+*/
+
 
 import uk.ac.warwick.dcs.maze.logic.IRobot;
 import java.util.*;
 
-public class Explorer {
+public class Ex1 {
     private int pollRun = 0; // Incremented after each move
     private RobotData robotData; // Data store for junctions
     private int explorerMode = 1; // 1 = explore, 0 = backtrack
