@@ -1,8 +1,18 @@
-// Code for Explorer.java - Laveen Chandnani (2004842)
+// Code for Exercise 2 of Coursework 2, Part 1 - Laveen Chandnani (2004842)
 
-/** Preamble for Ex2:
+/* Preamble for Exercise 2:
  * 
- *  
+ * In Ex1.java, I'd approached the task by storing the co-ordinates and the approached-from heading for each junction visited, 
+ * and when the robot needed to backtrack, I would look up the co-ordinates of the junction the robot was currently at to get 
+ * the direction the robot needed to head in. 
+ * 
+ * For this exercise, instead of storing the co-ordinates and the approached-from heading of the junction, I decided to use a stack to store only 
+ * the headings for each junction. Every time the robot visited a junction for the first time, I would push the direction the robot approached the 
+ * junction from onto the stack, and popped from the stack every time I'd needed to backtrack to get the direction the robot had to head in. This 
+ * ensured that every time I needed to backtrack, the top of the stack always had the direction the robot had approached the current junction from. 
+ * This also meant that I no longer had to do a linear search on the list of junction objects to work out which direction I was heading in, meaning 
+ * this implementation not only saves space as we store less data, but is more efficient as maze scales up in size as we can simply pop from the 
+ * stack instead of doing a linear search.
  */
 
 
@@ -11,7 +21,7 @@ import java.util.*;
 
 public class Ex2 {
     private int pollRun = 0; // Incremented after each move
-    private RobotDataNoCoord robotData; // Data store for junctions
+    private RobotDataNoCoord robotData; // Data store for headings
     private int explorerMode = 1; // 1 = explore, 0 = backtrack
 
     public void controlRobot(IRobot robot) {
@@ -80,7 +90,7 @@ public class Ex2 {
 
     private int getBacktrackDirection(IRobot robot, int heading) { 
         // Useful to have a method which can convert the absolute direction we want the robot to head in to a relative direction the opposite way
-        return IRobot.AHEAD + (heading - robot.getHeading() + 6) % 4;
+        return IRobot.AHEAD + (heading - robot.getHeading() + 6) % 4; // Note that we add 6 instead of 4 to reverse the direction
     }
 
     // Method to choose a random direction, given an ArrayList of absolute directions
@@ -184,7 +194,7 @@ public class Ex2 {
         // No PASSAGE exit
         else {
             explorerMode = 0; // If we reach here it means we should be backtracking
-            return getBacktrackDirection(robot, robotData.headings.pop()); // When backtracking, pop off the last junction's heading            // Note that we add 6 instead of 4 to reverse the direction, as we want to go in the opposite direction to which we approached the junction from
+            return getBacktrackDirection(robot, robotData.headings.pop()); // When backtracking, pop off the last junction's heading
         }
     }
 }
