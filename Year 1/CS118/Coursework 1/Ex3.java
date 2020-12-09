@@ -66,7 +66,7 @@ public class Ex3 {
 		 * 		- Work out the difference between the integers representing the absolute direction of interest and the relative direction currently faced
 		 * 		- Add 4 to this result in case the difference is negative 
 		 * 		- Find the remainder when divided by 4 to get the difference between 0 and 3
-		 * 		- Add this to IRobot.AHEAD to look at the absolute direction of interest 
+		 * 		- Add this to IRobot.AHEAD to look in the absolute direction of interest 
 		 */
 		return robot.look(IRobot.AHEAD + (heading - robot.getHeading() + 4) % 4);
 
