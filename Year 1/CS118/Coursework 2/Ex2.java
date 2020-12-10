@@ -21,12 +21,12 @@ import java.util.*;
 
 public class Ex2 {
     private int pollRun = 0; // Incremented after each move
-    private RobotDataNoCoord robotData; // Data store for headings
+    private RobotData2 robotData; // Data store for headings
     private int explorerMode = 1; // 1 = explore, 0 = backtrack
 
     public void controlRobot(IRobot robot) {
         if ((robot.getRuns() == 0) && (pollRun == 0)) { // Checking if we are currently on the first run of a new maze
-            robotData = new RobotDataNoCoord(); // Resets the data store
+            robotData = new RobotData2(); // Resets the data store
             explorerMode = 1;
         }
 
@@ -199,6 +199,6 @@ public class Ex2 {
     }
 }
 
-class RobotDataNoCoord {
+class RobotData2 {
     Stack<Integer> headings = new Stack<>(); // To hold the initially arrived-from headings for each junction
 }

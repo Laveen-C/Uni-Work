@@ -42,12 +42,12 @@ import java.util.*;
 
 public class Ex1 {
     private int pollRun = 0; // Incremented after each move
-    private RobotData robotData; // Data store for junctions
+    private RobotData1 robotData; // Data store for junctions
     private int explorerMode = 1; // 1 = explore, 0 = backtrack
 
     public void controlRobot(IRobot robot) {
         if ((robot.getRuns() == 0) && (pollRun == 0)) { // Checking if we are currently on the first run of a new maze
-            robotData = new RobotData(); // Resets the data store
+            robotData = new RobotData1(); // Resets the data store
             explorerMode = 1;
         }
 
@@ -185,7 +185,7 @@ public class Ex1 {
 
         // If this is a new junction that has not been previously visited, we need to store data for this junction
         if (beenbeforeExits(robot) == 1) {
-            robotData.junctions[robotData.junctionCounter] = new JunctionRecorder(robot); // We store the current junction's data in the junctions array
+            robotData.junctions[robotData.junctionCounter] = new JunctionRecorder1(robot); // We store the current junction's data in the junctions array
             // robotData.printJunction(); // test line to ensure data is being stored as expected
             robotData.junctionCounter++; // Increment the junction counter since we have found a new junction
         }
@@ -219,10 +219,10 @@ public class Ex1 {
 
 }
 
-class RobotData {
+class RobotData1 {
     int junctionCounter = 0; // No. of junctions currently being stored in the array
     int maxJunctions = 10000; // Max number of junctions likely to occur
-    JunctionRecorder[] junctions = new JunctionRecorder[maxJunctions];
+    JunctionRecorder1[] junctions = new JunctionRecorder1[maxJunctions];
 
     public void resetJunctionCounter() {
         junctionCounter = 0;
@@ -245,13 +245,13 @@ class RobotData {
     }
 }
 
-class JunctionRecorder { // This class will be used to create an object for each junction to store data about it.
+class JunctionRecorder1 { // This class will be used to create an object for each junction to store data about it.
     // Attributes
     int x;
     int y;
     int arrived;
 
-    public JunctionRecorder(IRobot robot) {
+    public JunctionRecorder1(IRobot robot) {
         x = robot.getLocation().x;
         y = robot.getLocation().y;
         arrived = robot.getHeading();
