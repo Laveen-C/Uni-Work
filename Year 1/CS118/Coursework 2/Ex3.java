@@ -257,6 +257,8 @@ public class Ex3 {
                 else {
                     heading = oppositeHeading.get(robotData.junctions[robotData.numOfJunctions].entered);
                     direction = (IRobot.AHEAD + ((heading - robot.getHeading() + 4) % 4));
+                    explorerMode = 0;
+                    robotData.junctions[robotData.junctionIndex].state = 2; // Marking the junction as dead
                 }
                 robotData.junctions[robotData.numOfJunctions] = junctionMarker(robot, robotData.junctions[robotData.numOfJunctions], heading); // Marking the exit heading
                 robotData.junctions[robotData.numOfJunctions].state = 1; // Marking the junction as an old junction
@@ -306,6 +308,7 @@ public class Ex3 {
                 else {
                     heading = oppositeHeading.get(robotData.junctions[robotData.numOfJunctions].entered);
                     direction = (IRobot.AHEAD + ((heading - robot.getHeading() + 4) % 4));
+                    robotData.junctions[robotData.junctionIndex].state = 2; // Marking the junction as dead
                 }
                 
                 robotData.junctions[robotData.junctionIndex] = junctionMarker(robot, robotData.junctions[robotData.junctionIndex], heading); // Marking this entrance as visited

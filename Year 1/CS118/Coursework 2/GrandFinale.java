@@ -2,7 +2,12 @@
 
 /* Preamble for Grand Finale:
  * 
+ * I decided to modify my previous approach from Exercise 3, as I felt that it would be easier to just remove the junctions which were backtracked on to obtain a path that 
+ * is shorter and reached the target quicker, since it is not possible to make progress on a backtracked junction by this design. 
  * 
+ * Since Exercise 3 worked on loopy mazes, and my Grand Finale is an extension of my Exercise 3, I know that it will work on loopy mazes. It is able to deal with repeat runs of 
+ * the same maze as well as new mazes, since Tremaux's algorithm works on any maze. Although I was not able to fully extend the code to solve the problem of collisions, 
+ * which I was unable to work out, the code is able to shorten it's steps and time taken to reach a target compared to it's initial run.
  */
 
 import uk.ac.warwick.dcs.maze.logic.IRobot;
@@ -10,10 +15,12 @@ import uk.ac.warwick.dcs.maze.logic.IRobot;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-public class Ex3 {
+public class GrandFinale {
     private int pollRun = 0; // Incremented after each move
-    private RobotData3 robotData; // Data store for junctions]
+    private RobotData3 robotData; // Data store for junctions
     private int explorerMode = 1; // 1 = explore, 0 = backtrack
+    private ArrayList<Integer> junctionHeadings = new ArrayList<Integer>(); // To hold all of the junction headings to send the robot towards when we approach a junction.
+    private int junctionNo = 0; // Holds the index of the junction we are currently on
 
     public void controlRobot(IRobot robot) {
         int direction;
@@ -36,7 +43,19 @@ public class Ex3 {
             direction = corridoor(robot);
         }
         else { // Junction and crossroads case
-            direction = junction(robot);
+            if (robot.getRuns() == 0) {
+                direction = junction(robot);
+                robotData.printRoute(robot);
+            }
+            else {
+                for (int i = 0; i < robotData.numOfJunctions; i++) {
+                    if (robotData.junctions[i].state == 1) { // If the junction was not a dead end, we add it to the route of junction headings to take
+                        junctionHeadings.add(robotData.junctions[i].entered);
+                    }
+                }
+                direction = junction2(robot); // An alternative method to go through the arrayList of junction headings to take
+                junctionNo++;
+            }
         }
         //robotData.printRoute(robot);
         robot.face(direction);
@@ -45,7 +64,6 @@ public class Ex3 {
 
     public void reset() {
         robotData.resetJunction();
-
         explorerMode = 1;
     }
 
@@ -247,6 +265,8 @@ public class Ex3 {
                 else {
                     heading = oppositeHeading.get(robotData.junctions[robotData.numOfJunctions].entered);
                     direction = (IRobot.AHEAD + ((heading - robot.getHeading() + 4) % 4));
+                    explorerMode = 0;
+                    robotData.junctions[robotData.junctionIndex].state = 2; // Marking the junction as dead
                 }
                 robotData.junctions[robotData.numOfJunctions] = junctionMarker(robot, robotData.junctions[robotData.numOfJunctions], heading); // Marking the exit heading
                 robotData.junctions[robotData.numOfJunctions].state = 1; // Marking the junction as an old junction
@@ -296,6 +316,7 @@ public class Ex3 {
                 else {
                     heading = oppositeHeading.get(robotData.junctions[robotData.numOfJunctions].entered);
                     direction = (IRobot.AHEAD + ((heading - robot.getHeading() + 4) % 4));
+                    robotData.junctions[robotData.junctionIndex].state = 2; // Marking the junction as dead
                 }
                 
                 robotData.junctions[robotData.junctionIndex] = junctionMarker(robot, robotData.junctions[robotData.junctionIndex], heading); // Marking this entrance as visited
@@ -305,6 +326,10 @@ public class Ex3 {
     }
 
     // Note that we do not implement a crossroads method since it would effectively be doing the same thing as the junction method
+
+    private int junction2(IRobot robot) { // Method to be used for the second run and beyond
+        return IRobot.AHEAD + ((junctionHeadings.get(junctionNo + 1) - robot.getHeading() + 4) % 4); // Since we want to go in the direction of arrived-from for the next junction as we leave the first junction
+    }
 
 }
 
@@ -316,8 +341,6 @@ class RobotData3 { // Class to hold data for each junction the robot passes thro
 
     public void resetJunction() {
         junctionIndex = 0;
-        numOfJunctions = 0;
-        Arrays.fill(junctions, null);
 
     }
 
@@ -378,7 +401,7 @@ class JunctionRecorder3 { // Class to create an object for each junction to stor
 
     public void printJunction(IRobot robot) {
         String text;
-        text = "x=" + x + ", y=" + y + ", N=" + N + ", E=" + E + ", S=" + S + ", W=" + W + ", state=" + state;
+        text = "x=" + x + ", y=" + y + ", N=" + N + ", E=" + E + ", S=" + S + ", W=" + W + ", state=" + state + ", entered=" + entered;
         System.out.println(text);
     }
 
